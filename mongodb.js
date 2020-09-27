@@ -2,7 +2,6 @@
 db.placesProfiles.aggregate([ { $lookup: { from:'openingHours', localField:'_id', foreignField: 'placeID', as:'openingHours'} },{$merge:{into:'placesProfiles'}} ]);
 
 //Insert value Task C2
-
 db.placesProfiles.insertOne(
     {
         "_id": "70000",
