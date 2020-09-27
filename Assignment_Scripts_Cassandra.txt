@@ -7,7 +7,7 @@ DESCRIBE KEYSPACE FIT5137A1_MRDB;
 USE FIT5137A1_MRDB;
 
 /** USER RATINGS CSV FILE **/
-CREATE TABLE user_ratings (rating_id int, user_id int, place_id int, rating_place int, rating_food int, rating_service int, user_personal_traits frozen<user_personal_traits_udt>, user_personality frozen<user_personality_udt>, user_preferences frozen<user_preferences_udt>, user_other_demographics frozen<user_other_demographics_udt>, user_fav_cuisines set<text>, user_fav_payment_method set<text>, PRIMARY KEY(rating_id));
+CREATE TABLE user_ratings (rating_id int, user_id int, place_id int, rating_place int, rating_food int, rating_service int, user_personal_traits frozen<user_personal_traits_udt>, user_personality frozen<user_personality_udt>, user_preferences frozen<user_preferences_udt>, user_other_demographics frozen<user_other_demographics_udt>, user_fav_cuisines set<text>, user_fav_payment_method set<text>, PRIMARY KEY(user_id,rating_id));
 
 DROP TYPE user_personal_traits_udt;
     DROP TYPE user_personality_udt;
@@ -79,4 +79,22 @@ CREATE INDEX ON user_ratings (user_id);
 
 UPDATE user_ratings
 SET user_fav_cuisines = user_fav_cuisines - {'Fast_Food'}
+WHERE user_id=65;  
+
+
+select * from user_ratings where user_id=1108;
+
+
+UPDATE user_ratings
+SET user_fav_cuisines = user_fav_payment_method - {'cash'} + {'debit_cards'}
 WHERE user_id=1108;  
+    
+
+
+DELETE FROM user_ratings
+WHERE user_id=1063;
+
+
+INSERT INTO place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines)
+VALUES(7777,1060,70000, 'Taco Jacks',{'Carretera Central Sn','San Luis Potosi','SLP','Mexico'},{'No_Alcohol_Served','not permitted','informal','completely','medium','TRUE','open','Internet'}, none,{'any'},{'Mexican','Burgers'} );
+
