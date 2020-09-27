@@ -1,0 +1,82 @@
+CREATE KEYSPACE FIT5137A1_MRDB WITH
+    replication = {'class':'SimpleStrategy',
+                   'replication_factor':1};
+
+DESCRIBE KEYSPACE FIT5137A1_MRDB;
+
+USE FIT5137A1_MRDB;
+
+/** USER RATINGS CSV FILE **/
+CREATE TABLE user_ratings (rating_id int, user_id int, place_id int, rating_place int, rating_food int, rating_service int, user_personal_traits frozen<user_personal_traits_udt>, user_personality frozen<user_personality_udt>, user_preferences frozen<user_preferences_udt>, user_other_demographics frozen<user_other_demographics_udt>, user_fav_cuisines set<text>, user_fav_payment_method set<text>, PRIMARY KEY(rating_id));
+
+DROP TYPE user_personal_traits_udt;
+    DROP TYPE user_personality_udt;
+    DROP TYPE user_preferences_udt;
+    DROP TYPE user_other_demographics_udt;
+
+CREATE TYPE user_personal_traits_udt (
+    birth_year int,
+    weight int,
+    height decimal,
+    marital_status text
+);
+
+CREATE TYPE user_personality_udt(
+interest text,
+type_of_work text,
+fav_color text,
+drink_level text,
+);
+
+CREATE TYPE user_preferences_udt (
+    budget text,
+    smoker boolean,
+    dress_preference text,
+    ambience text,
+    transport text
+);
+
+CREATE TYPE user_other_demographics_udt (
+    religion text,
+    employment text
+);
+
+
+COPY user_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,user_personal_traits, user_personality, user_preferences, user_other_demographics,user_fav_cuisines,user_fav_payment_method) FROM 'C:\Users\visha\OneDrive\Desktop\FIT5137_Assignment\MonashMRDB_datasets\MonashMRDB_datasets\user_ratings.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+
+
+
+/** PLACE CSV FILE **/
+
+CREATE TABLE place_ratings (rating_id int, user_id int, place_id int, rating_place int, rating_food int, rating_service int, place_name text, place_address frozen<place_address_utd>, place_features frozen<place_features_utd>, parking_arrangements text, accepted_payment_modes set<text>, cuisines set<text>,PRIMARY KEY(rating_id));
+
+CREATE TYPE place_address_utd (
+    street text,
+    city text,
+    state text,
+    country text
+);
+
+CREATE TYPE place_features_utd (
+    alcohol text,
+    smoking_area text,
+    dress_code text,
+    accessibility text,
+    price text,
+    franchise boolean,
+    area text,
+    other_services text
+);
+
+COPY place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines) FROM 'C:\Users\visha\OneDrive\Desktop\FIT5137_Assignment\MonashMRDB_datasets\MonashMRDB_datasets\place_ratings.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+
+
+
+
+CREATE INDEX ON user_ratings (user_id);
+
+--UPDATE
+
+UPDATE user_ratings
+SET user_fav_cuisines = user_fav_cuisines - {'Fast_Food'}
+WHERE user_id=1108;  

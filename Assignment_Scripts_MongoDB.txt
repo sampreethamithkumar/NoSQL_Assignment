@@ -1,0 +1,11 @@
+db.placeProfiles.aggregate([
+    {
+        $lookup:
+        {
+            from: "openingHours",
+            localField: "_id",
+            foreignField:"placeID",
+            as:"lookups"
+        }
+    }
+]).pretty()
