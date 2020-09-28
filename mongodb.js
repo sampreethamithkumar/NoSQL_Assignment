@@ -1,3 +1,10 @@
+//Creating database
+use FIT5137A1MRDB;
+
+//Creating collection
+db.createCollection.placeProfiles;
+db.createCollections.userProfiles;
+
 // Embedding openinghours in placesProfiles
 db.placeProfiles.aggregate([ { $lookup: { from:'openingHours', localField:'_id', foreignField: 'placeID', as:'openingHours'} },{$merge:{into:'placeProfiles'}} ]);
 
