@@ -43,6 +43,7 @@ CREATE TYPE user_other_demographics_udt (
 
 
 COPY user_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,user_personal_traits, user_personality, user_preferences, user_other_demographics,user_fav_cuisines,user_fav_payment_method) FROM 'C:\Users\visha\OneDrive\Desktop\FIT5137_Assignment\MonashMRDB_datasets\MonashMRDB_datasets\user_ratings.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY user_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,user_personal_traits, user_personality, user_preferences, user_other_demographics,user_fav_cuisines,user_fav_payment_method) FROM 'C:\Users\sampr\Downloads\cassandra_dataset\user_ratings.csv' WITH DELIMITER=',' AND HEADER=TRUE;
 
 
 
@@ -69,6 +70,7 @@ CREATE TYPE place_features_utd (
 );
 
 COPY place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines) FROM 'C:\Users\visha\OneDrive\Desktop\FIT5137_Assignment\MonashMRDB_datasets\MonashMRDB_datasets\place_ratings.csv' WITH DELIMITER=',' AND HEADER=TRUE;
+COPY place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines) FROM 'C:\Users\sampr\Downloads\cassandra_dataset\place_ratings.csv' WITH DELIMITER=',' AND HEADER=TRUE;
 
 
 
@@ -79,7 +81,7 @@ CREATE INDEX ON user_ratings (user_id);
 
 UPDATE user_ratings
 SET user_fav_cuisines = user_fav_cuisines - {'Fast_Food'}
-WHERE user_id=65;  
+WHERE user_id=1108 and rating_id IN (65,66,67,68,69,70,71,72,73,74);
 
 
 select * from user_ratings where user_id=1108;
@@ -87,6 +89,9 @@ select * from user_ratings where user_id=1108;
 
 UPDATE user_ratings
 SET user_fav_cuisines = user_fav_payment_method - {'cash'} + {'debit_cards'}
+WHERE user_id=1108;  
+UPDATE user_ratings
+SET user_fav_payment_method = user_fav_payment_method - {'cash'}
 WHERE user_id=1108;  
     
 
@@ -97,4 +102,3 @@ WHERE user_id=1063;
 
 INSERT INTO place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines)
 VALUES(7777,1060,70000, 'Taco Jacks',{'Carretera Central Sn','San Luis Potosi','SLP','Mexico'},{'No_Alcohol_Served','not permitted','informal','completely','medium','TRUE','open','Internet'}, none,{'any'},{'Mexican','Burgers'} );
-
