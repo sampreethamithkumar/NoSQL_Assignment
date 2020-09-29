@@ -26,7 +26,6 @@ db.userProfiles.aggregate({ $match: { favCuisines: /Bakery/ } }, {
 
 //9. Display International restaurants that are open on sunday.
 
-<<<<<<< HEAD
 //11.Display the average age according to each drinker level
 db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year: new Date() } }, { $toInt: { $year: "$personalTraits.birthYear" } }] }, drinkerLevel: "$personality.drinkLevel" } }, { $group: { _id: "$drinkerLevel", averageAge: { $avg: "$age" } } }]).pretty();
 
@@ -34,9 +33,8 @@ db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year:
 //the food rating and the user’s budget.
 
 //14. list unique cuisines in the database
-db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$count:"Total cuisines"}]);
-db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines",", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$count:"Total cuisines"}]);
-=======
+db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",","]}}},{$unwind: "$cuisines"},{$project:{cuisines:{$trim:{input:"$cuisines"}}}},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
+db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
 //11.
 
 
@@ -56,4 +54,28 @@ db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines",", "]}}},{$
  ]);
 
 //When going to Japanese restaurant not done yet 
->>>>>>> refs/remotes/origin/master
+
+
+// 15. Display all of the restaurants and indicate using a separate field/column whether the
+// restaurant includes mexican cuisines. For instance, you can display if the restaurant
+// serves mexican cuisine then the result should show the restaurant name followed by
+// “serves mexican food” in the next field/column, or if the restaurant does not serves
+// mexican cuisine then the result should show the restaurant name followed by “doesn’t
+// serves mexican food” in the next field/column
+
+
+    db.placeProfiles.aggregate([
+        
+        {
+            $addFields:{
+                "conditioncheck":{
+                    "$cond":{
+                        if:{
+                            $regexFind:{input:"$cuisines",regex:/Mexican/}},
+                            then: {$concat:["$placeName","  serves mexican food"]},
+                            else: "doesn’t serves mexican food"
+                    }
+                }
+            }
+
+    }]).pretty();
