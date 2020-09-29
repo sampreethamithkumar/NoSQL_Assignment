@@ -26,7 +26,6 @@ db.userProfiles.aggregate({ $match: { favCuisines: /Bakery/ } }, {
 
 //9. Display International restaurants that are open on sunday.
 
-<<<<<<< HEAD
 //11.Display the average age according to each drinker level
 db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year: new Date() } }, { $toInt: { $year: "$personalTraits.birthYear" } }] }, drinkerLevel: "$personality.drinkLevel" } }, { $group: { _id: "$drinkerLevel", averageAge: { $avg: "$age" } } }]).pretty();
 
@@ -36,7 +35,6 @@ db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year:
 //14. list unique cuisines in the database
 db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$count:"Total cuisines"}]);
 db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines",", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$count:"Total cuisines"}]);
-=======
 //11.
 
 
@@ -56,4 +54,3 @@ db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines",", "]}}},{$
  ]);
 
 //When going to Japanese restaurant not done yet 
->>>>>>> refs/remotes/origin/master
