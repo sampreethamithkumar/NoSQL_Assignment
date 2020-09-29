@@ -9,29 +9,29 @@ db.placeProfiles.find().count();
 
 
 //7. Display all users who are students and prefer a medium budget restaurant.
-db.userProfiles.find({"otherDemographics.employment":"student","preferences.budget":"medium"}).pretty();
+db.userProfiles.find({ "otherDemographics.employment": "student", "preferences.budget": "medium" }).pretty();
 
 
 //8. Display all users who like Bakery cuisines and combine your output with all places
 //having Bakery cuisines.
-db.userProfiles.find(favCuisines: /Bakery/).count();
-db.userProfiles.aggregate({$match:{favCuisines: /Bakery/}},{$count:"Number of users"});
-db.placeProfiles.aggregate({$match:{cuisines: /Bakery/}},{$count:"Number of places"});
-
-//Question 8 code
-db.userProfiles.aggregate({$match:{favCuisines: /Bakery/}},{$lookup:{
-    from: "placeProfiles",
-    pipeline:[
-        {$match:{"cuisines":/Bakery/}}
-    ],
-    as :"Combined"
-}}).pretty();
+db.userProfiles.aggregate({ $match: { favCuisines: /Bakery/ } }, {
+    $lookup: {
+        from: "placeProfiles",
+        pipeline: [
+            { $match: { "cuisines": /Bakery/ } }
+        ],
+        as: "Combined"
+    }
+}).pretty();
 
 //9. Display International restaurants that are open on sunday.
 
-//11.
-db.userProfiles_1.aggregate({$project:{Year:{$year:"$personalTraits.birthYear"}}}).pretty()
-db.userProfiles_1.aggregate({$project:{currentDate:new Date()}},{$project:{Year:{$year:"$currentDate"}}}).pretty()
-db.userProfiles_1.aggregate({$project:{currentDate:new Date(),birthYear:"$personalTraits.birthYear"}},{$project:{currentYear:{$year:"$currentDate"},bornYear:{$year:"$birthYear"}}},{$project:{Age:{"$subtract":["$currentYear","$bornYear"]}}}).pretty()
-db.userProfiles_1.aggregate({$project:{currentDate:{$year:new Date()},birthYear:{$year:"$personalTraits.birthYear"}}},{$project:{Age:{"$subtract":["$currentDate","$birthYear"]}}}).pretty()
-db.userProfiles_1.aggregate({$project:{Age:{"$subtract":[{$toInt:{$year:new Date()}},{$toInt:{$year:"$personalTraits.birthYear"}}]}}}).pretty();
+//11.Display the average age according to each drinker level
+db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year: new Date() } }, { $toInt: { $year: "$personalTraits.birthYear" } }] }, drinkerLevel: "$personality.drinkLevel" } }, { $group: { _id: "$drinkerLevel", averageAge: { $avg: "$age" } } }]).pretty();
+
+//12. For each user whose favourite cuisine is Family, display the place ID, the place rating,
+//the food rating and the user’s budget.
+
+//14. list unique cuisines in the database
+db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$count:"Total cuisines"}]);
+db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines",", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$count:"Total cuisines"}]);
