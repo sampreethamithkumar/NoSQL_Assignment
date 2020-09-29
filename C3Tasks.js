@@ -33,3 +33,5 @@ db.userProfiles.aggregate({$match:{favCuisines: /Bakery/}},{$lookup:{
 db.userProfiles_1.aggregate({$project:{Year:{$year:"$personalTraits.birthYear"}}}).pretty()
 db.userProfiles_1.aggregate({$project:{currentDate:new Date()}},{$project:{Year:{$year:"$currentDate"}}}).pretty()
 db.userProfiles_1.aggregate({$project:{currentDate:new Date(),birthYear:"$personalTraits.birthYear"}},{$project:{currentYear:{$year:"$currentDate"},bornYear:{$year:"$birthYear"}}},{$project:{Age:{"$subtract":["$currentYear","$bornYear"]}}}).pretty()
+db.userProfiles_1.aggregate({$project:{currentDate:{$year:new Date()},birthYear:{$year:"$personalTraits.birthYear"}}},{$project:{Age:{"$subtract":["$currentDate","$birthYear"]}}}).pretty()
+db.userProfiles_1.aggregate({$project:{Age:{"$subtract":[{$toInt:{$year:new Date()}},{$toInt:{$year:"$personalTraits.birthYear"}}]}}}).pretty();
