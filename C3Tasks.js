@@ -30,8 +30,21 @@ db.userProfiles.aggregate({$match:{favCuisines: /Bakery/}},{$lookup:{
 //9. Display International restaurants that are open on sunday.
 
 //11.
-db.userProfiles_1.aggregate({$project:{Year:{$year:"$personalTraits.birthYear"}}}).pretty()
-db.userProfiles_1.aggregate({$project:{currentDate:new Date()}},{$project:{Year:{$year:"$currentDate"}}}).pretty()
-db.userProfiles_1.aggregate({$project:{currentDate:new Date(),birthYear:"$personalTraits.birthYear"}},{$project:{currentYear:{$year:"$currentDate"},bornYear:{$year:"$birthYear"}}},{$project:{Age:{"$subtract":["$currentYear","$bornYear"]}}}).pretty()
-db.userProfiles_1.aggregate({$project:{currentDate:{$year:new Date()},birthYear:{$year:"$personalTraits.birthYear"}}},{$project:{Age:{"$subtract":["$currentDate","$birthYear"]}}}).pretty()
-db.userProfiles_1.aggregate({$project:{Age:{"$subtract":[{$toInt:{$year:new Date()}},{$toInt:{$year:"$personalTraits.birthYear"}}]}}}).pretty();
+
+
+//What are the top 3 most popular ambiences (friends/ family/ solitary) for a single when going to a Japanese restaurant?
+
+ db.userProfiles.aggregate([
+     {
+         $match:{"personalTraits.maritalStatus":"single"},     
+     },
+     {
+        $group:{_id:{
+            Ambience:"$preferences.ambience"
+        }, totalperson:{$sum:1}}
+     },
+     {$sort:{totalPerson:-1}},{$limit:3}
+    
+ ]);
+
+//When going to Japanese restaurant not done yet 
