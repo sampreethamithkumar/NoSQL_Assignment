@@ -14,5 +14,10 @@ db.userProfiles.find({"otherDemographics.employment":"student","preferences.budg
 
 //8. Display all users who like Bakery cuisines and combine your output with all places
 //having Bakery cuisines.
-
-
+db.userProfiles.aggregate({$match:{favCuisines: /Bakery/}},{$lookup:{
+    from: "placeProfiles",
+    pipeline:[
+        {$match:{"cuisines":/Bakery/}}
+    ],
+    as :"Combined"
+}}).pretty();
