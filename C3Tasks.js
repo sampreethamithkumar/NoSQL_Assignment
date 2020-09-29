@@ -5,9 +5,6 @@ db.userProfiles.find().count();
 db.placeProfiles.find().count();
 
 
-//3. How many reviews were made in the database?
-
-
 //7. Display all users who are students and prefer a medium budget restaurant.
 db.userProfiles.find({ "otherDemographics.employment": "student", "preferences.budget": "medium" }).pretty();
 
@@ -79,3 +76,5 @@ db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{
             }
 
     }]).pretty();
+
+    //Display all high budget restaurants that serve alcohol and smoking area 
