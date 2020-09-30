@@ -36,7 +36,9 @@ select avg(rating_place),avg(rating_food),avg(rating_service) from place_ratings
 avg(rating_place),avg(rating_food),avg(rating_service)
 
 
+
 //12.For each user whose favourite cuisine is Family, display the place ID, the place rating,
 the food rating and the user’s budget.
 create index on user_ratings(user_fav_cuisines);
-select place_id, rating_place, rating_food from user_ratings where user_fav_cuisines CONTAINS 'Family';
+create index on user_ratings(user_preferences);
+select place_id, rating_place, rating_food,user_preferences.budget as Budget from user_ratings where user_fav_cuisines CONTAINS 'Family';
