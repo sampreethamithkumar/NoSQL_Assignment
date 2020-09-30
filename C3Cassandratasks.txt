@@ -1,5 +1,6 @@
 //3. How many reviews were made in the database?
 
+--Count is less than output
 select count(*) as Total_user_ratings from user_ratings;
 
 
