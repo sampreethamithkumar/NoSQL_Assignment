@@ -18,22 +18,24 @@ create index on user_ratings(user_personality);
 
 select * from user_ratings where user_personality={interest:'technology',type_of_work:'thrifty-protector',fav_color:'blue',drink_level:'casual drinker'};
 
+///6.What are the place ids and ratings for food for places serving only Pizzeria cuisine?
+(Note the result should include cuisine).
 
+create index on place_ratings(cuisines);
+select place_id, rating_food from place_ratings where cuisines CONTAINS 'Pizzeria';
 
 ///10. Display the average place rating, average food rating, and average service rating for
 puesto de tacos. Show the average values in decimal points.
 
 create index on user_ratings(place_name);
-create index on place_ratings(place_name);
 
-select AVG(cast(rating_place)),AVG(rating_food),AVG(rating_service) from place_ratings where place_name='puesto de tacos';
-select rating_place,rating_food,rating_service from place_ratings where place_name='puesto de tacos';
+select avg(rating_place),avg(rating_food),avg(rating_service) from place_ratings where place_name='puesto de tacos';
 
 
 avg(rating_place),avg(rating_food),avg(rating_service)
 
 
-//For each user whose favourite cuisine is Family, display the place ID, the place rating,
+//12.For each user whose favourite cuisine is Family, display the place ID, the place rating,
 the food rating and the user’s budget.
-select place_id, rating_place, rating_food from user_ratings where user_fav_cuisines CONTAINS 'Family'
-ALLOW FILTERING;
+create index on user_ratings(user_fav_cuisines);
+select place_id, rating_place, rating_food from user_ratings where user_fav_cuisines CONTAINS 'Family';
