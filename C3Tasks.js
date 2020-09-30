@@ -81,3 +81,19 @@ db.placeProfiles.aggregate([
     }]).pretty();
 
     //Display all high budget restaurants that serve alcohol and smoking area 
+
+
+    //What are the ambience, dresscode and budget that professional prefer?
+
+
+    // Display the restaurants that provide accessablilty support and what cusines do they serve to their customer?
+
+
+  // Count of franchises present in each city
+
+  //Cassandra Questions
+
+  //How many Catholic students prefer Mexican food.
+
+
+  //Display all the restaurant name that has fastfood and accepts cash payments which has their own parking arrangements
