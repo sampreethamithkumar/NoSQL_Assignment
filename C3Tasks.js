@@ -30,25 +30,27 @@ db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year:
 //the food rating and the user’s budget.
 
 //14. list unique cuisines in the database
-db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",","]}}},{$unwind: "$cuisines"},{$project:{cuisines:{$trim:{input:"$cuisines"}}}},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
-db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
+db.userProfiles.aggregate([{ $project: { cuisines: { $split: ["$favCuisines", ","] } } }, { $unwind: "$cuisines" }, { $project: { cuisines: { $trim: { input: "$cuisines" } } } }, { $group: { _id: "$cuisines" } }, { $sort: { _id: 1 } }]);
+db.placeProfiles.aggregate([{ $project: { cuisines: { $split: ["$cuisines", ", "] } } }, { $unwind: "$cuisines" }, { $group: { _id: "$cuisines" } }, { $sort: { _id: 1 } }]);
 //11.
 
 
 //What are the top 3 most popular ambiences (friends/ family/ solitary) for a single when going to a Japanese restaurant?
 
- db.userProfiles.aggregate([
-     {
-         $match:{"personalTraits.maritalStatus":"single"},     
-     },
-     {
-        $group:{_id:{
-            Ambience:"$preferences.ambience"
-        }, totalperson:{$sum:1}}
-     },
-     {$sort:{totalPerson:-1}},{$limit:3}
-    
- ]);
+db.userProfiles.aggregate([
+    {
+        $match: { "personalTraits.maritalStatus": "single" },
+    },
+    {
+        $group: {
+            _id: {
+                Ambience: "$preferences.ambience"
+            }, totalperson: { $sum: 1 }
+        }
+    },
+    { $sort: { totalPerson: -1 } }, { $limit: 3 }
+
+]);
 
 //When going to Japanese restaurant not done yet 
 
@@ -61,19 +63,20 @@ db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{
 // serves mexican food” in the next field/column
 
 
-    db.placeProfiles.aggregate([
-        
-        {
-            $addFields:{
-                "conditioncheck":{
-                    "$cond":{
-                        if:{
-                            $regexFind:{input:"$cuisines",regex:/Mexican/}},
-                            then: {$concat:["$placeName","  serves mexican food"]},
-                            else: "doesn’t serves mexican food"
-                    }
+db.placeProfiles.aggregate([
+
+    {
+        $addFields: {
+            "conditioncheck": {
+                "$cond": {
+                    if: {
+                        $regexFind: { input: "$cuisines", regex: /Mexican/ }
+                    },
+                    then: { $concat: ["$placeName", "  serves mexican food"] },
+                    else: "doesn’t serves mexican food"
                 }
             }
+        }
 
     }]).pretty();
 
