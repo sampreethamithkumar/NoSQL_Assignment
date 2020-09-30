@@ -78,15 +78,17 @@ db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{
     }]).pretty();
 
     //Display all high budget restaurants that serve alcohol and smoking area 
-
+    // Can't find any data with alcohol served (we need to change this question)
 
     //What are the ambience, dresscode and budget that professional prefer?
+    db.userProfiles.aggregate({$match :{"otherDemographics.employment":"professional"}},{$project: {Ambience:"$preferences.ambience",Budget:"$preferences.budget",DressPreference:"$preferences.dressPreference"}}).pretty();
 
-
-    // Display the restaurants that provide accessablilty support and what cusines do they serve to their customer?
-
+    // Display the restaurants that provide type of accessablilty support and what cusines do they serve to their customer?
+    db.placeProfiles.aggregate({$project: {_id:0,PlaceName:"$placeName",AccessabliltySupport: "$placeFeatures.accessibility",cusines:"$cuisines"}}).pretty();
 
   // Count of franchises present in each city
+    db.placeProfiles.aggregate({$group: {_id:{city: "$address.city", placeName: "$placeName"},count:{$sum:1}}});
+    db.placeProfiles.aggregate({$group: {_id:{city: "$address.city"},count:{$sum:1}}});
 
   //Cassandra Questions
 
