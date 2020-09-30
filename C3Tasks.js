@@ -93,6 +93,11 @@ db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{
   //Cassandra Questions
 
   //How many Catholic students prefer Mexican food.
-
+  create Index on  user_ratings (user_other_demographics);
+  create Index on  user_ratings (user_fav_cuisines);
+    select count(*) from user_ratings where user_other_demographics={religion:'Catholic',employment:'student'} AND user_fav_cuisines CONTAINS 'Mexican' ALLOW FILTERING;
 
   //Display all the restaurant name that has fastfood and accepts cash payments which has their own parking arrangements
+  create INDEX ON place_ratings (cuisines);  
+  create INDEX ON place_ratings (accepted_payment_modes);  
+  SELECT place_name from place_ratings where cuisines CONTAINS 'Fast_Food' and accepted_payment_modes CONTAINS 'cash' and parking_arrangements='yes' ALLOW FILTERING;
