@@ -100,4 +100,4 @@ WHERE user_id=1063;
 
 
 INSERT INTO place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines)
-VALUES(7777,1060,70000, 'Taco Jacks',{'Carretera Central Sn','San Luis Potosi','SLP','Mexico'},{'No_Alcohol_Served','not permitted','informal','completely','medium','TRUE','open','Internet'}, none,{'any'},{'Mexican','Burgers'} );
+VALUES(7777,1060,70000, 'Taco Jacks',{'Carretera Central Sn','San Luis Potosi','SLP','Mexico'},{'No_Alcohol_Served','not permitted','informal','completely','medium','TRUE','open','Internet'}, 'none',{'any'},{'Mexican','Burgers'} );
