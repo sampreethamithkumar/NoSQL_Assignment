@@ -7,7 +7,7 @@ DESCRIBE KEYSPACE FIT5137A1_MRDB;
 USE FIT5137A1_MRDB;
 
 /** USER RATINGS CSV FILE **/
-CREATE TABLE user_ratings (rating_id int, user_id int, place_id int, rating_place int, rating_food int, rating_service int, user_personal_traits frozen<user_personal_traits_udt>, user_personality frozen<user_personality_udt>, user_preferences frozen<user_preferences_udt>, user_other_demographics frozen<user_other_demographics_udt>, user_fav_cuisines set<text>, user_fav_payment_method set<text>, PRIMARY KEY(user_id,rating_id));
+CREATE TABLE user_ratings (rating_id int, user_id int, place_id int, rating_place decimal, rating_food decimal, rating_service decimal, user_personal_traits frozen<user_personal_traits_udt>, user_personality frozen<user_personality_udt>, user_preferences frozen<user_preferences_udt>, user_other_demographics frozen<user_other_demographics_udt>, user_fav_cuisines set<text>, user_fav_payment_method set<text>, PRIMARY KEY((rating_id,user_id)));
 
 DROP TYPE user_personal_traits_udt;
     DROP TYPE user_personality_udt;
@@ -23,7 +23,7 @@ CREATE TYPE user_personal_traits_udt (
 
 CREATE TYPE user_personality_udt(
 interest text,
-type_of_work text,
+type_of_worker text,
 fav_color text,
 drink_level text,
 );
@@ -49,7 +49,7 @@ COPY user_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_ser
 
 /** PLACE CSV FILE **/
 
-CREATE TABLE place_ratings (rating_id int, user_id int, place_id int, rating_place int, rating_food int, rating_service int, place_name text, place_address frozen<place_address_utd>, place_features frozen<place_features_utd>, parking_arrangements text, accepted_payment_modes set<text>, cuisines set<text>,PRIMARY KEY(rating_id));
+CREATE TABLE place_ratings (rating_id int, user_id int, place_id int, rating_place decimal, rating_food decimal, rating_service decimal, place_name text, place_address frozen<place_address_utd>, place_features frozen<place_features_utd>, parking_arrangements text, accepted_payment_modes set<text>, cuisines set<text>,PRIMARY KEY((rating_id,place_id)));
 
 CREATE TYPE place_address_utd (
     street text,
