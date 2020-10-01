@@ -23,7 +23,7 @@ select * from user_ratings where user_personality={interest:'technology',type_of
 (Note the result should include cuisine).
 
 create index on place_ratings(cuisines);
-select place_id, rating_food from place_ratings where cuisines CONTAINS 'Pizzeria';
+select place_id, rating_food,cuisines from place_ratings where cuisines CONTAINS 'Pizzeria';
 
 ///10. Display the average place rating, average food rating, and average service rating for
 puesto de tacos. Show the average values in decimal points.
