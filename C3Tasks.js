@@ -22,35 +22,35 @@ db.userProfiles.aggregate({ $match: { favCuisines: /Bakery/ } }, {
 }).pretty();
 
 //9. Display International restaurants that are open on sunday.
-
+db.placeProfiles.aggregate({$match:{cuisines:"International","openingHOurs.days":"Sun;"}}).pretty();
 //11.Display the average age according to each drinker level
 db.userProfiles.aggregate([{ $project: { age: { "$subtract": [{ $toInt: { $year: new Date() } }, { $toInt: { $year: "$personalTraits.birthYear" } }] }, drinkerLevel: "$personality.drinkLevel" } }, { $group: { _id: "$drinkerLevel", averageAge: { $avg: "$age" } } }]).pretty();
 
 //12. For each user whose favourite cuisine is Family, display the place ID, the place rating,
 //the food rating and the user’s budget.
 
-//14. list unique cuisines in the database
-db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",","]}}},{$unwind: "$cuisines"},{$project:{cuisines:{$trim:{input:"$cuisines"}}}},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
-db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
-//11.
 
 
-//What are the top 3 most popular ambiences (friends/ family/ solitary) for a single when going to a Japanese restaurant?
 
- db.userProfiles.aggregate([
-     {
-         $match:{"personalTraits.maritalStatus":"single"},     
-     },
-     {
+//13.What are the top 3 most popular ambiences (friends/ family/ solitary) for a single when going to a Japanese restaurant?
+
+db.userProfiles.aggregate([
+    {
+        $match:{"personalTraits.maritalStatus":"single",favCuisines:/Japanese/},     
+    },
+    {
         $group:{_id:{
             Ambience:"$preferences.ambience"
         }, totalperson:{$sum:1}}
-     },
-     {$sort:{totalPerson:-1}},{$limit:3}
+    },
+    {$sort:{totalperson:-1}},{$limit:3}
     
- ]);
+]);
 
-//When going to Japanese restaurant not done yet 
+//14. list unique cuisines in the database
+db.userProfiles.aggregate([{$project:{cuisines:{$split:["$favCuisines",","]}}},{$unwind: "$cuisines"},{$project:{cuisines:{$trim:{input:"$cuisines"}}}},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
+db.placeProfiles.aggregate([{$project:{cuisines:{$split:["$cuisines", ", "]}}},{$unwind: "$cuisines"},{$group:{_id:"$cuisines"}},{$sort:{_id:1}}]);
+
 
 
 // 15. Display all of the restaurants and indicate using a separate field/column whether the
