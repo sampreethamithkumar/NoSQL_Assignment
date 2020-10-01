@@ -99,5 +99,11 @@ DELETE FROM user_ratings
 WHERE user_id=1063 and rating_id IN (137,138,139,140,141);
 
 
-INSERT INTO place_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name, place_address, place_features,parking_arrangements,accepted_payment_modes,cuisines)
-VALUES(7777,1060,70000, 'Taco Jacks',{'Carretera Central Sn','San Luis Potosi','SLP','Mexico'},{'No_Alcohol_Served','not permitted','informal','completely','medium','TRUE','open','Internet'}, none,{'any'},{'Mexican','Burgers'} );
+INSERT INTO place_ratings (rating_id,user_id,place_id,rating_place,rating_food,rating_service,place_name,place_address,place_features,parking_arrangements,accepted_payment_modes,cuisines)
+VALUES(7777,1060,70000,2,1,2,'Taco Jacks',{street:'Carretera Central Sn',city:'San Luis Potosi',state:'SLP',country:'Mexico'},{alcohol:'No_Alcohol_Served',smoking_area:'not permitted',dress_code:'informal',accessibility:'completely',price:'medium',franchise:TRUE,area:'open',other_services:'Internet'}, 'none',{'any'},{'Mexican','Burgers'} );
+
+
+
+INSERT INTO user_ratings(rating_id,user_id,place_id,rating_place,rating_food,rating_service,user_personal_traits, user_personality, user_preferences,user_other_demographics,user_fav_cuisines,user_fav_payment_method)
+VALUES(7777,1060,70000,2,1,2,{birth_year: 1991, weight: 82, height: 1.84, marital_status: 'single'},{interest: 'technology', type_of_worker: 'thrifty-protector', fav_color: 'blue', drink_level: 'casual drinker'},{budget: 'medium', smoker: FALSE, dress_preference: 'formal', ambience: 'family', transport: 'public'}, {religion: 'Catholic', employment: 'student'},{'Burgers', 'Cafeteria', 'Pizzeria', 'Juice', 'American', 'Tex-Mex', 'Spanish', 'Mexican', 'Fast_Food', 'Cafe-Coffee_Shop', 'Soup', 'Hot_Dogs', 'Italian'},{'cash'});
+
